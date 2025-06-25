@@ -1,22 +1,29 @@
+// src/views/Favorites.jsx
+import React from 'react';
 import { useSelector } from 'react-redux';
+import { Grid, Typography } from '@mui/material';
 import ProductCard from '../components/ProductCard';
 
-export default function Favorites() {
-  const products = useSelector(state => state.products.items);
-  const favorites = useSelector(state => state.favorites);
-  const favoriteProducts = products.filter(p => favorites.includes(p.id));
+const Favorites = () => {
+  const { items, favorites } = useSelector(state => state.products);
+  const favoriteProducts = items.filter(product => favorites.includes(product.id));
 
   return (
-    <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div style={{ padding: '20px' }}>
+      <Typography variant="h4" gutterBottom>Favoritos</Typography>
       {favoriteProducts.length === 0 ? (
-        <p className="col-span-full text-center text-gray-600">
-          No hay productos favoritos marcados.
-        </p>
-      ) : (
-        favoriteProducts.map(product => (
-          <ProductCard key={product.id} product={product} />
-        ))
-      )}
+          <Typography>No hay productos favoritos.</Typography>
+          ) : (
+          <Grid container spacing={2}>
+      {favoriteProducts.map(product => (
+          <Grid item key={product.id}>
+            <ProductCard product={product} />
+          </Grid>
+      ))}
+      </Grid>
+        )}
     </div>
   );
-}
+};
+
+export default Favorites;
